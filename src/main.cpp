@@ -60,7 +60,7 @@ void morse_to_led(int morse_symbol[], int length) {
             digitalWrite(led_pin, LOW);
             Serial.print(" -");
         }
-        // Space
+        // Pause between symbols
         if (i < length - 1) {
             delay(pause_lenght);
             // Serial.print("");
@@ -69,17 +69,20 @@ void morse_to_led(int morse_symbol[], int length) {
     Serial.print(" /");
 }
 
-void str_to_morse_to_led(String input) {
-    input.toUpperCase();
+void str_to_morse(String input) {
+    input.toUpperCase(); // Upper case because of ASCII codes
     for (unsigned int i = 0; i < input.length(); i++) {
         char letter = input[i];
+        // Space
         if (letter == ' ') {
             delay(space_delay);
             Serial.print(" /");
+            // If the letter appears in the alphaber, print it
         } else if (letter >= 'A' && letter <= 'Z') {
-            int index = letter - 'A';
+            int index = letter - char(65); // Get position of letter in alphabet
             morse_to_led(morse_codes[index], morse_symbol_count[index]);
             delay(letter_pause);
+        // If the letter is not part of the alphabet, cancel the function
         } else {
             Serial.println("Invalid character, please use a letter from the alphabet.");
             return;
@@ -92,6 +95,6 @@ void loop() {
     if (Serial.available() > 0) {
         String input = Serial.readString();
         Serial.println("Input: " + input);
-        str_to_morse_to_led(input);
+        str_to_morse(input);
     }
 }
