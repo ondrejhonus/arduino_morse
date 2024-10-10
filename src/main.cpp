@@ -85,7 +85,7 @@ void str_to_morse_to_led(String input) {
             return;
         }
     }
-    Serial.print("//");
+    Serial.println("//");
 }
 
 void loop() {
